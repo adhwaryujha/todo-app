@@ -1,23 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
 
 function App() {
+  const [newItem, setNewItem] = useState("");
+  const [items, setItems] = useState([]);
+
+  const addItem = (event) => {
+    setNewItem(event.target.value);
+  };
+
+  const clickHandeler = () => {
+    setItems((perv) => {
+      return [...perv, newItem];
+    });
+
+    setNewItem("");
+  };
+
+  const change = () => {
+    setNewItem("");
+  };
+
+  const deleteHandeler = (id) => {
+    setItems((prev) => {
+      return prev.filter((value, index) => {
+        return index !== id;
+      });
+    });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>ToDo List</h1>
+      <input placeholder="Add Item" onChange={addItem} value={newItem} />
+      <button onClick={clickHandeler}>Add</button>
+      <ol>
+        {items.map((value, index) => {
+          return (
+            <li key={index} id={index}>
+              {value}
+              <button
+                onClick={() => {
+                  deleteHandeler(index);
+                }}
+              >
+                Delete
+              </button>
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 }
